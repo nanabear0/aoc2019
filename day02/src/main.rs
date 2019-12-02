@@ -1,16 +1,22 @@
+use rayon::prelude::*;
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::option::Option;
 
 fn main() {
     println!("part1: {}", part1(12, 2));
-    'noun: for noun in 0..=99 {
-        for verb in 0..=99 {
-            if part1(noun, verb) == 19_690_720 {
-                println!("part2: {}", 100 * noun + verb);
-                break 'noun;
-            }
-        }
+    if let Some((noun, verb)) = (0..=99)
+        .into_par_iter()
+        .flat_map(|x| {
+            (0..=99)
+                .into_par_iter()
+                .map(move |y| (x as usize, y as usize))
+        })
+        .find_any(|(x, y)| part1(*x, *y) == 19_690_720)
+    {
+        println!("part2: {}", 100 * noun + verb);
+    } else {
+        println!("No solution found");
     }
 }
 
