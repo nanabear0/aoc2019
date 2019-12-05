@@ -125,7 +125,7 @@ fn read_op(value: i32) -> Operation {
     }
 }
 
-fn read_value(pos: usize, offset: usize, mode: bool, opcodes: &Vec<i32>) -> i32 {
+fn read_value(pos: usize, offset: usize, mode: bool, opcodes: &[i32]) -> i32 {
     if mode {
         opcodes[pos + offset]
     } else {
